@@ -1,30 +1,12 @@
 import os
-import heapq
+from heap import Heap, HeapNode
 
 class HuffmanCoding:
 	def __init__(self, path):
 		self.path = path
-		self.heap = []
+		self.heap = Heap()
 		self.codes = {}
 		self.reverse_mapping = {}
-
-	class HeapNode:
-		def __init__(self, char, freq):
-			self.char = char
-			self.freq = freq
-			self.left = None
-			self.right = None
-
-		# defining comparators less_than and equals
-		def __lt__(self, other):
-			return self.freq < other.freq
-
-		def __eq__(self, other):
-			if(other == None):
-				return False
-			if(not isinstance(other, HeapNode)):
-				return False
-			return self.freq == other.freq
 
 	# functions for compression:
 
@@ -38,19 +20,18 @@ class HuffmanCoding:
 
 	def make_heap(self, frequency):
 		for key in frequency:
-			node = self.HeapNode(key, frequency[key])
-			heapq.heappush(self.heap, node)
+			self.heap.add_kv(key, frequency[key])
 
 	def merge_nodes(self):
-		while(len(self.heap)>1):
-			node1 = heapq.heappop(self.heap)
-			node2 = heapq.heappop(self.heap)
+		while(len(self.heap.heapList)>1):
+			node1 = self.heap.remove_min()
+			node2 = self.heap.remove_min()
 
-			merged = self.HeapNode(None, node1.freq + node2.freq)
+			merged = HeapNode(None, node1.freq + node2.freq)
 			merged.left = node1
 			merged.right = node2
 
-			heapq.heappush(self.heap, merged)
+			self.heap.add(merged)
 
 
 	def make_codes_helper(self, root, current_code):
@@ -67,7 +48,7 @@ class HuffmanCoding:
 
 
 	def make_codes(self):
-		root = heapq.heappop(self.heap)
+		root = self.heap.remove_min()
 		current_code = ""
 		self.make_codes_helper(root, current_code)
 
