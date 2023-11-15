@@ -58,12 +58,6 @@ class Heap:
             if self.heapList[small_child] < self.heapList[j]:
                 self.swap(j, small_child)
                 self.down_heap(small_child)
-
-    def add_kv(self, key, value):
-        self.heapList.append(HeapNode(key, value))
-        if (self.size > 0):
-            self.up_heap(len(self.heapList)-1)
-        self.size += 1
     
     def add(self, node : HeapNode):
         self.heapList.append(node)
