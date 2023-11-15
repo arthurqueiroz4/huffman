@@ -20,7 +20,7 @@ class HuffmanCoding:
 
 	def make_heap(self, frequency):
 		for key in frequency:
-			self.heap.add_kv(key, frequency[key])
+			self.heap.add(HeapNode(key, frequency[key]))
 
 	def merge_nodes(self):
 		while(len(self.heap.heapList)>1):
